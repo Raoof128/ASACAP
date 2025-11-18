@@ -47,6 +47,22 @@ CLI command (or call `POST /demo/seed?force=true`) whenever you want to reset to
 the curated fixtures of assets, templates, and suppliers. The frontend expects
 the API at `http://localhost:8000`; override via `REACT_APP_API_BASE_URL`.
 
+## Automation CLI
+
+The repository ships with an automation-first CLI (`scripts/cli.py`) to keep
+common operator tasks scripted and reproducible. The helper exposes:
+
+- `seed` – bulk loads a CSV file that mirrors `AssetCreate`.
+- `demo-data` – calls `/demo/seed` (optionally with `--force`) to reload the
+  curated fixtures documented under `demo/README.md`.
+- `register` – registers an individual asset from a JSON payload, ideal for
+  smoke-testing new schemas.
+- `board-report` – generates the executive summary used in the board pack.
+
+Each command accepts `--api-base` or the `ASACAP_API_BASE` environment variable.
+See [`docs/CLI_REFERENCE.md`](docs/CLI_REFERENCE.md) for advanced usage,
+examples, and extension guidance.
+
 ### Demo users
 
 | Role              | Username                            | Password |
@@ -79,6 +95,10 @@ ACSC payload creation, and HTTP endpoints via `fastapi.testclient`.
   outstanding actions (demo video + PostgreSQL persistence hardening).
 - [`docs/QUALITY_ASSURANCE.md`](docs/QUALITY_ASSURANCE.md) – how to execute the
   automated readiness audit for executive sign-off.
+- [`docs/CLI_REFERENCE.md`](docs/CLI_REFERENCE.md) – automation CLI usage and
+  extension notes.
+- [`demo/README.md`](demo/README.md) – explains the curated demo fixtures and
+  how to update them safely.
 - [`docs/reports/board_report_sample.md`](docs/reports/board_report_sample.md)
   and the accompanying [`PDF`](docs/reports/board_report_sample.pdf) – printable
   artefacts for executive stakeholders.
@@ -128,7 +148,38 @@ Record a 3–5 minute walkthrough covering asset import, compliance dashboard,
 incident reporting, and board report export. Store it under `docs/` when ready –
 a placeholder is left intentionally so future contributors can drop in the MP4.
 
+## Release readiness
+
+Before tagging a release or presenting to stakeholders, run through the
+checklist in [`docs/RELEASE_CHECKLIST.md`](docs/RELEASE_CHECKLIST.md). It
+captures the code-quality gates (tests, linting), governance artefacts, demo
+fixture refresh process, automation checks, and operational dry-runs so every
+shipment meets the same standard.
+
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). Contributions should maintain Australian
-English, pass CI, and include documentation for new workflows.
+We welcome improvements from operators, engineers, and researchers who rely on
+the reference implementation. Review [CONTRIBUTING.md](CONTRIBUTING.md) for the
+full workflow, including how to install dependencies, naming branches, and the
+coding standards for FastAPI, React, Terraform, and Ansible assets. Every pull
+request must:
+
+1. Include tests and documentation updates for new workflows.
+2. Pass `make test` and `make audit` locally before requesting a review.
+3. Follow the [Code of Conduct](CODE_OF_CONDUCT.md) to keep discussions
+   respectful and inclusive.
+
+## Security and responsible disclosure
+
+Never raise public GitHub issues for vulnerabilities. Instead, follow the steps
+in [SECURITY.md](SECURITY.md) so the maintainers can triage the report with you
+confidentially. We acknowledge reports within two business days and aim to ship
+high-severity fixes within 30 days. Temporary mitigations are documented in the
+runbooks when required.
+
+## License
+
+The project is distributed under the [MIT License](LICENSE), which permits
+commercial and non-commercial use, modification, distribution, and private
+usage provided that copyright notices remain intact. Review the license before
+integrating ASACAP artefacts into production offerings.

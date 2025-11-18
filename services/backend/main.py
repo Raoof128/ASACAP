@@ -119,7 +119,7 @@ class IncidentCreate(BaseModel):
     title: str
     severity: str
     description: str
-    evidence_bundle: List[str] = []
+    evidence_bundle: List[str] = Field(default_factory=list)
 
 
 class Supplier(BaseModel):
@@ -134,7 +134,7 @@ class SupplierIngestRequest(BaseModel):
     name: str
     geo: str
     tier: int = 1
-    dependencies: List[str] = []
+    dependencies: List[str] = Field(default_factory=list)
 
 
 class BoardReportRequest(BaseModel):

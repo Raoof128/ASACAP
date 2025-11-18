@@ -18,15 +18,25 @@ ROOT = Path(__file__).resolve().parents[1]
 
 EXPECTED_FILES = [
     "README.md",
+    "LICENSE",
+    "CONTRIBUTING.md",
+    "CODE_OF_CONDUCT.md",
+    "SECURITY.md",
+    "demo/README.md",
     "docs/ARCHITECTURE.md",
+    "docs/ACSC_integration.md",
     "docs/OPERATIONS_RUNBOOK.md",
     "docs/DEMO_PLAYBOOK.md",
     "docs/DATA_MODEL.md",
     "docs/AUDIT_REPORT.md",
+    "docs/QUALITY_ASSURANCE.md",
+    "docs/CLI_REFERENCE.md",
+    "docs/CIRMP_templates/README.md",
     "docs/security_hardening_checklist.md",
     "docs/openapi.yaml",
     "docs/postman_collection.json",
     "docs/reports/board_report_sample.pdf",
+    "docs/RELEASE_CHECKLIST.md",
     "infra/terraform/main.tf",
     "ansible/playbooks/ot_site.yml",
     "services/backend/main.py",
@@ -37,10 +47,13 @@ EXPECTED_FILES = [
 README_SECTIONS = [
     "Features",
     "Getting started",
+    "Automation CLI",
     "Testing",
     "Documentation portfolio",
     "Tooling",
     "Deployment overview",
+    "Demo video",
+    "Release readiness",
 ]
 
 
