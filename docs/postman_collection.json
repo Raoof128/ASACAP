@@ -1,0 +1,52 @@
+{
+  "info": {
+    "name": "ASACAP API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "List assets",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/assets"
+      }
+    },
+    {
+      "name": "Generate CIRMP template",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"asset_type\": \"SCADA RTU\",\n  \"organisation_size\": \"medium\",\n  \"sector\": \"Energy\"\n}"
+        },
+        "url": "{{baseUrl}}/cirmp/templates/generate"
+      }
+    },
+    {
+      "name": "Report incident",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/incidents/{{incidentId}}/report"
+      }
+    },
+    {
+      "name": "Seed demo data",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/demo/seed?force=true"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000"
+    }
+  ]
+}

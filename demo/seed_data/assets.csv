@@ -1,0 +1,4 @@
+name,sector,category,asset_type,criticality,owner
+Sydney Core Switching,Communications,Network,Comms tower,Critical,Network Operations
+Pilbara OT SCADA,Energy,OT,SCADA RTU,High,OT Reliability
+Payments Cluster,Finance,IT,IT server,High,Banking Platforms

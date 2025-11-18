@@ -1,0 +1,26 @@
+{
+  "asset_type": "IT server",
+  "organisation_size": "large",
+  "sector": "Finance",
+  "hazards": [
+    "Physical security",
+    "Personnel insider threat",
+    "Supply chain compromise",
+    "Cyber intrusion",
+    "Operational technology disruption"
+  ],
+  "controls": [
+    "NIST CSF alignment",
+    "Backup fuel logistics checks",
+    "Protected SCADA network zoning",
+    "IEC 62443 alignment for IT server",
+    "Incident runbook for IT server",
+    "Supply chain verification checks"
+  ],
+  "evidence": [
+    "ACSC incident tickets",
+    "Patch compliance exports",
+    "Risk workshop notes"
+  ],
+  "review_cadence_days": 90
+}

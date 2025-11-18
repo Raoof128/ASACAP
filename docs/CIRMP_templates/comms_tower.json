@@ -1,0 +1,26 @@
+{
+  "asset_type": "Comms tower",
+  "organisation_size": "small",
+  "sector": "Communications",
+  "hazards": [
+    "Physical security",
+    "Personnel insider threat",
+    "Supply chain compromise",
+    "Cyber intrusion",
+    "Operational technology disruption"
+  ],
+  "controls": [
+    "NIST CSF alignment",
+    "Backup fuel logistics checks",
+    "Protected SCADA network zoning",
+    "IEC 62443 alignment for Comms tower",
+    "Incident runbook for Comms tower",
+    "Supply chain verification checks"
+  ],
+  "evidence": [
+    "ACSC incident tickets",
+    "Patch compliance exports",
+    "Risk workshop notes"
+  ],
+  "review_cadence_days": 180
+}
