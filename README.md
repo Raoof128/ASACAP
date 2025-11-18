@@ -25,6 +25,10 @@ UX aimed at both operational teams and boards.
 ## Getting started
 
 ```bash
+# 0. Install backend deps (dev requirements pin FastAPI + pytest versions)
+python -m venv .venv && source .venv/bin/activate
+pip install -r services/backend/requirements-dev.txt
+
 # 1. Start the FastAPI backend
 uvicorn services.backend.main:app --reload
 
@@ -33,8 +37,8 @@ cd services/frontend/webapp
 npm install
 npm start
 
-# 3. (Optional) Refresh demo fixtures via CLI
-python scripts/cli.py demo-data --force
+# 3. (Optional) Refresh demo fixtures via CLI pointing at your API base URL
+python scripts/cli.py demo-data --force --api-base http://localhost:8000
 ```
 
 The backend seeds demo data automatically on startup via FastAPI lifespan
@@ -60,7 +64,29 @@ make test
 ```
 
 Tests use FastAPI's helpers to validate the CIRMP generator, compliance scores,
-and ACSC payload creation.
+ACSC payload creation, and HTTP endpoints via `fastapi.testclient`.
+
+## Documentation portfolio
+
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) – system components, security
+  controls, deployment workflow, and extension options.
+- [`docs/OPERATIONS_RUNBOOK.md`](docs/OPERATIONS_RUNBOOK.md) – day-2 operations
+  for demo refreshes, incidents, supply-chain alerts, DR and contacts.
+- [`docs/DEMO_PLAYBOOK.md`](docs/DEMO_PLAYBOOK.md) – ready-to-deliver script for
+  the mandated 3–5 minute walkthrough.
+- [`docs/DATA_MODEL.md`](docs/DATA_MODEL.md) – schema mapping to PostgreSQL.
+- [`docs/AUDIT_REPORT.md`](docs/AUDIT_REPORT.md) – traceability matrix and
+  outstanding actions (demo video + PostgreSQL persistence hardening).
+- [`docs/QUALITY_ASSURANCE.md`](docs/QUALITY_ASSURANCE.md) – how to execute the
+  automated readiness audit for executive sign-off.
+- [`docs/reports/board_report_sample.md`](docs/reports/board_report_sample.md)
+  and the accompanying [`PDF`](docs/reports/board_report_sample.pdf) – printable
+  artefacts for executive stakeholders.
+
+Run `python scripts/audit_repo.py` (or `make audit`) whenever you want to
+collect a structured summary of repository completeness. The helper validates
+that the documentation tree exists, README sections remain intact, and the test
+suite passes.
 
 ## Tooling
 

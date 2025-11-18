@@ -26,4 +26,5 @@ classes, enabling streamlined attestations.
 - Accelerate procurement diversification for speciality fibre.
 
 This Markdown report can be exported to PDF (A4) or presented via the frontend
-board export workflow.
+board export workflow. A ready-to-send PDF lives alongside this file at
+`board_report_sample.pdf`.

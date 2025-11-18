@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import pathlib
 import sys
 import urllib.request
@@ -14,35 +15,48 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 SEED_DIR = ROOT / "demo" / "seed_data"
 
 
-def _request(method: str, endpoint: str, data: bytes | None = None) -> dict:
+def _request(
+    method: str,
+    endpoint: str,
+    data: bytes | None = None,
+    *,
+    api_base: str = API_DEFAULT,
+) -> dict:
     request = urllib.request.Request(
-        f"{API_DEFAULT}{endpoint}", data=data, method=method.upper()
+        f"{api_base}{endpoint}", data=data, method=method.upper()
     )
     request.add_header("Content-Type", "application/json")
     with urllib.request.urlopen(request) as response:  # noqa: S310 (demo tool)
         return json.loads(response.read())
 
 
-def seed_assets_from_csv(csv_path: pathlib.Path) -> dict:
+def seed_assets_from_csv(csv_path: pathlib.Path, *, api_base: str) -> dict:
     with csv_path.open("r", encoding="utf-8") as handle:
         rows = list(csv.DictReader(handle))
     for row in rows:
-        _request("POST", "/assets", data=json.dumps(row).encode())
+        _request("POST", "/assets", data=json.dumps(row).encode(), api_base=api_base)
     return {"imported": len(rows)}
 
 
-def register_asset(payload_path: pathlib.Path) -> dict:
+def register_asset(payload_path: pathlib.Path, *, api_base: str) -> dict:
     payload = json.loads(payload_path.read_text(encoding="utf-8"))
-    return _request("POST", "/assets", data=json.dumps(payload).encode())
+    return _request(
+        "POST", "/assets", data=json.dumps(payload).encode(), api_base=api_base
+    )
 
 
-def generate_board_report() -> dict:
+def generate_board_report(*, api_base: str) -> dict:
     payload = json.dumps({"audience": "Board", "include_supply_chain": True}).encode()
-    return _request("POST", "/reports/board", payload)
+    return _request("POST", "/reports/board", payload, api_base=api_base)
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="SOCI automation CLI")
+    parser.add_argument(
+        "--api-base",
+        default=os.environ.get("ASACAP_API_BASE", API_DEFAULT),
+        help="Base URL for the FastAPI backend (env: ASACAP_API_BASE)",
+    )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     seed_parser = subparsers.add_parser("seed", help="Bulk load assets from CSV")
@@ -69,15 +83,17 @@ def main() -> None:
 
     args = parser.parse_args()
 
+    api_base = args.api_base.rstrip("/")
+
     if args.command == "seed":
-        result = seed_assets_from_csv(args.csv)
+        result = seed_assets_from_csv(args.csv, api_base=api_base)
     elif args.command == "demo-data":
         suffix = "?force=true" if args.force else ""
-        result = _request("POST", f"/demo/seed{suffix}")
+        result = _request("POST", f"/demo/seed{suffix}", api_base=api_base)
     elif args.command == "register":
-        result = register_asset(args.payload)
+        result = register_asset(args.payload, api_base=api_base)
     else:
-        result = generate_board_report()
+        result = generate_board_report(api_base=api_base)
 
     print(json.dumps(result, indent=2))
 

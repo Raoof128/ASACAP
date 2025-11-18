@@ -56,6 +56,14 @@ class AssetBase(BaseModel):
     owner: str = Field(description="Responsible owner or team")
 
 
+def _dump(model: BaseModel, **kwargs) -> Dict[str, object]:
+    """Compatibility shim across Pydantic versions."""
+
+    if hasattr(model, "model_dump"):
+        return model.model_dump(**kwargs)  # type: ignore[attr-defined]
+    return model.dict(**kwargs)
+
+
 class Asset(AssetBase):
     id: str
     created_at: datetime
@@ -197,9 +205,7 @@ def list_assets() -> List[Asset]:
 @app.post("/assets", response_model=Asset, status_code=201)
 def create_asset(asset: AssetCreate) -> Asset:
     asset_id = str(uuid4())
-    record = Asset(
-        id=asset_id, created_at=datetime.now(timezone.utc), **asset.model_dump()
-    )
+    record = Asset(id=asset_id, created_at=datetime.now(timezone.utc), **_dump(asset))
     DATABASE["assets"][asset_id] = record
     return record
 
@@ -256,7 +262,7 @@ def create_incident(payload: IncidentCreate) -> Incident:
         status="triage",
         impact_assessment="Pending",
         evidence_bundle=payload.evidence_bundle,
-        **payload.model_dump(exclude={"evidence_bundle"}),
+        **_dump(payload, exclude={"evidence_bundle"}),
     )
     DATABASE["incidents"][incident_id] = record
     return record
@@ -312,7 +318,7 @@ def generate_board_report(payload: BoardReportRequest) -> BoardReport:
         next_quarter_priorities=[
             "Complete OT segmentation uplift",
             "Roll out IEC 62443 mapping to all OT zones",
-            "Automate evidence capture for SOC2",
+            "Publish CIRMP scorecards to board committees",
         ],
         top_risks=[
             "Converged IT/OT credential compromise",

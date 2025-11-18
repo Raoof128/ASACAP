@@ -1,4 +1,4 @@
-.PHONY: backend frontend test lint terraform-init terraform-apply ansible
+.PHONY: backend frontend test lint terraform-init terraform-apply ansible audit
 
 backend:
 	uvicorn services.backend.main:app --reload
@@ -11,6 +11,9 @@ lint:
 
 test:
 	pytest -q
+
+audit:
+	python scripts/audit_repo.py
 
 terraform-init:
 	cd infra/terraform && terraform init
