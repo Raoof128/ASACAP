@@ -1,0 +1,8 @@
+{
+  "name": "National Energy SOC",
+  "sector": "Energy",
+  "category": "IT",
+  "asset_type": "Analytics cluster",
+  "criticality": "High",
+  "owner": "Cyber Fusion"
+}

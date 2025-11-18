@@ -1,0 +1,31 @@
+---
+- name: Harden OT edge gateway
+  hosts: ot_demo
+  gather_facts: no
+  vars:
+    hardening_banner: "Authorised use only"
+  tasks:
+    - name: Ensure critical packages present
+      ansible.builtin.package:
+        name: ["chrony", "auditd"]
+        state: present
+
+    - name: Configure login banner
+      ansible.builtin.copy:
+        dest: /etc/issue
+        content: "{{ hardening_banner }}"
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Enable auditd service
+      ansible.builtin.service:
+        name: auditd
+        enabled: yes
+        state: started
+
+    - name: Apply IEC 62443 firewall template
+      ansible.builtin.template:
+        src: templates/iec62443-firewall.conf.j2
+        dest: /etc/firewall/policies.conf
+        mode: '0600'
